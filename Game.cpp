@@ -40,6 +40,15 @@ class Dog
         
 };
 
+class Game
+{
+    public:
+
+    private:
+        Dog m_dogs[3];
+        int m_numDogs;
+}
+
 // Player Implementation
 void Player::incMoney(float amt)
 {
@@ -91,7 +100,6 @@ int Dog::health()
 {
     return m_health;
 }
-
 
 int main()
 {
