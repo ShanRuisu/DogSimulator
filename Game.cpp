@@ -33,6 +33,7 @@ class Dog
         void incHealth(int amt);
         void decHealth(int amt);
         void kill();
+        void coyote();
 
         // Accessor Functions
         string name();
@@ -99,6 +100,16 @@ void Dog::decHealth(int amt)
     return;
 }
 
+void Dog::coyote()
+{   
+    int fate;
+    cout << "You encounter an coyote. Oof!" << endl;
+    fate = rand() %9;
+
+
+
+
+}
 string Dog::name()
 {
     return m_name;
