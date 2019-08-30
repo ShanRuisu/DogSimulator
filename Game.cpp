@@ -27,6 +27,7 @@ class Dog
         // Mutator Functions
         void incHealth(int amt);
         void decHealth(int amt);
+        void kill();
 
         // Accessor Functions
         string name();
@@ -47,7 +48,7 @@ class Game
     private:
         Dog m_dogs[3];
         int m_numDogs;
-}
+};
 
 // Player Implementation
 void Player::incMoney(float amt)
@@ -101,19 +102,13 @@ int Dog::health()
     return m_health;
 }
 
+void Dog::kill()
+{
+    m_health = 0;
+}
+
 int main()
 {
-    Player Phil;
-    cout << Phil.money() << endl;
-    Phil.decMoney(10);
-    cout << Phil.money() << endl;
-    Phil.incMoney(50);
-    cout << Phil.money() << endl << endl;
-
-    Dog One("Bork", 3);
-    cout << One.name() << endl;
-    cout << One.age() << endl;
-    cout << One.health() << endl;
     
     return 0;
 }
