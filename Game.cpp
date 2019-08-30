@@ -1,7 +1,10 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+<<<<<<< HEAD
 #include <vector>
+=======
+>>>>>>> upstream/master
 using namespace std;
 
 class Player
@@ -46,6 +49,7 @@ class Dog
 class Game
 {
     public:
+<<<<<<< HEAD
         Game();
         void takeTurn();
 
@@ -57,6 +61,13 @@ class Game
 
     private:
         vector<Dog> m_dogs;
+=======
+        void coyote();
+
+    private:
+        //Dog m_dogs[3];
+        int m_numDogs;
+>>>>>>> upstream/master
 };
 
 // Player Implementation
@@ -96,6 +107,22 @@ void Dog::decHealth(int amt)
     return;
 }
 
+<<<<<<< HEAD
+=======
+void Game::coyote()
+{   
+     cout << "You encounter an coyote. Oof!" << endl;
+        int fate = rand() %10;
+        cout << fate << endl;
+        if (fate <= 5){
+            cout << "Your dog ate that hoe like a Big Mac" << endl;
+        }
+        else{
+            cout << "The coyote ate your dog like a Quarter Pounder With Cheese" << endl;
+        }
+
+}
+>>>>>>> upstream/master
 string Dog::name()
 {
     return m_name;
@@ -119,6 +146,7 @@ void Dog::kill()
 // Game Implementation
 Game::Game()
 {
+<<<<<<< HEAD
     cout << endl << "In this game, you will have three dogs. Try not to let them die." << endl;
     
     // Create the dogs.
@@ -215,5 +243,10 @@ int main()
 
     Game start;
 
+=======
+    srand(time(NULL));
+    Game g1;
+    g1.coyote();
+>>>>>>> upstream/master
     return 0;
 }
