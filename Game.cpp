@@ -26,14 +26,10 @@ class Dog
 
         Dog(string name, int age);
 
-        // Copy Constructor
-        Dog(Dog copy);
-
         // Mutator Functions
         void incHealth(int amt);
         void decHealth(int amt);
         void kill();
-        void coyote();
 
         // Accessor Functions
         string name();
@@ -50,7 +46,14 @@ class Dog
 class Game
 {
     public:
+        Game();
         void takeTurn();
+
+        // Random Events
+        void coyote();
+
+        // Accessor Functions
+        void printStatus();
 
     private:
         vector<Dog> m_dogs;
@@ -81,13 +84,6 @@ Dog::Dog(string name, int age)
     m_age = age;
 }
 
-Dog::Dog(Dog copy)
-{
-    m_name = copy.m_name;
-    m_age = copy.m_age;
-    m_health = copy.m_health;
-}
-
 void Dog::incHealth(int amt)
 {
     m_health += amt;
@@ -100,16 +96,6 @@ void Dog::decHealth(int amt)
     return;
 }
 
-void Dog::coyote()
-{   
-    int fate;
-    cout << "You encounter an coyote. Oof!" << endl;
-    fate = rand() %9;
-
-
-
-
-}
 string Dog::name()
 {
     return m_name;
@@ -131,13 +117,42 @@ void Dog::kill()
 }
 
 // Game Implementation
+Game::Game()
+{
+    cout << endl << "In this game, you will have three dogs. Try not to let them die." << endl;
+    
+    // Create the dogs.
+    for (int i = 0; i < 3; i++)
+    {
+        string newName;
+        int newAge;
+        
+        // Name your dog
+        cout << "What would you like to name your new dog? ";
+        getline(cin, newName);
+
+        // Specify their age
+        cout << "How old is your dog? ";
+        cin >> newAge;
+        cin.ignore(1000, '\n');
+
+        // Create a new dog object
+        Dog newDog(newName, newAge);
+        m_dogs.push_back(newDog);
+
+        cout << endl;
+    }
+
+    printStatus();
+
+}
 
 // TODO: Will implement later
 /*
 void Game::takeTurn()
 {
     // Keep taking turns while there are dogs are still alive
-    while (m_numDog > 0)
+    while (m_numDog.size() > 0)
     {
         // Generate a random event for each dog
         vector<Dog>::iterator ptr;
@@ -166,9 +181,39 @@ void Game::takeTurn()
 }
 */
 
+void Game::coyote()
+{   
+    int fate;
+    cout << "You encounter an coyote. Oof!" << endl;
+    fate = rand() %9;
+
+
+
+
+}
+
+void Game::printStatus()
+{
+    cout << endl << "Here are your dogs:" << endl << endl;
+
+    // Iterate through the dog vector
+    vector<Dog>::iterator ptr;
+    for (ptr = m_dogs.begin(); ptr != m_dogs.end(); ptr++)
+    {
+        // Create dog pointer
+        Dog dog = *ptr;
+
+        cout << "Name: " << dog.name() << endl;
+        cout << "Age: " << dog.age() << endl;
+        cout << "Health: " << dog.health() << endl << endl;
+    }
+}
+
 int main()
 {
     srand(time(NULL));
+
+    Game start;
 
     return 0;
 }
