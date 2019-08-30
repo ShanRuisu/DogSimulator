@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <ctime>
 using namespace std;
 
 class Player
@@ -28,7 +29,6 @@ class Dog
         void incHealth(int amt);
         void decHealth(int amt);
         void kill();
-        void coyote();
 
         // Accessor Functions
         string name();
@@ -45,9 +45,10 @@ class Dog
 class Game
 {
     public:
+        void coyote();
 
     private:
-        Dog m_dogs[3];
+        //Dog m_dogs[3];
         int m_numDogs;
 };
 
@@ -88,14 +89,17 @@ void Dog::decHealth(int amt)
     return;
 }
 
-void Dog::coyote()
+void Game::coyote()
 {   
-    int fate;
-    cout << "You encounter an coyote. Oof!" << endl;
-    fate = rand() %9;
-
-
-
+     cout << "You encounter an coyote. Oof!" << endl;
+        int fate = rand() %10;
+        cout << fate << endl;
+        if (fate <= 5){
+            cout << "Your dog ate that hoe like a Big Mac" << endl;
+        }
+        else{
+            cout << "The coyote ate your dog like a Quarter Pounder With Cheese" << endl;
+        }
 
 }
 string Dog::name()
@@ -120,6 +124,8 @@ void Dog::kill()
 
 int main()
 {
-    
+    srand(time(NULL));
+    Game g1;
+    g1.coyote();
     return 0;
 }
