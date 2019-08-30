@@ -50,13 +50,14 @@ class Game
         void takeTurn();
 
         // Random Events
-        void coyote();
+        void coyote(Dog &dog);
 
         // Accessor Functions
         void printStatus();
 
     private:
         vector<Dog> m_dogs;
+        Player m_player;
 };
 
 // Player Implementation
@@ -148,40 +149,50 @@ Game::Game()
 }
 
 // TODO: Will implement later
-/*
 void Game::takeTurn()
 {
     // Keep taking turns while there are dogs are still alive
-    while (m_numDog.size() > 0)
+    while (m_dogs.size() > 0)
     {
         // Generate a random event for each dog
         vector<Dog>::iterator ptr;
 
-        for (ptr = m_Dogs.begin(); ptr != m_Dogs.end(); ptr++)
+        for (ptr = m_dogs.begin(); ptr != m_dogs.end(); ptr++)
         {
-            int num = rand() % 5;
+            Dog dog = *ptr;
+
+            // int num = rand() % 5;
+            int num = 0;
 
             // Call event depending on the number
             switch (num)
             {
+                // Coyote attack
                 case 0:
+                    coyote(dog);
+                    break;
                 case 1:
                 case 2:
                 case 3:
                 default:
+                    break;
             }
 
-            Dog* dog = *ptr;
-            if (dog->health() == 0)
+            if (dog.health() == 0)
             {
-
+                m_dogs.erase(ptr);
+                ptr--;
             }
         }
+
+        printStatus();
+
+        cout << "Press enter to continue." << endl;
+        cin.ignore(1000,'\n');
     }
 }
-*/
 
-void Game::coyote()
+void Game::coyote(Dog &dog)
 {   
     cout << "You encounter an coyote. Oof!" << endl;
     
@@ -189,13 +200,13 @@ void Game::coyote()
         
     if (fate <= 5)
     {
-        cout << "Your dog ate that hoe like a Big Mac" << endl;
+        cout << dog.name() << " ate that hoe like a Big Mac." << endl;
     }
     else
     {
-        cout << "The coyote ate your dog like a Quarter Pounder With Cheese" << endl;
+        cout << "The coyote ate " << dog.name() << " like a Quarter Pounder With Cheese." << endl;
+        dog.kill();
     }
-
 }
 
 void Game::printStatus()
@@ -220,6 +231,7 @@ int main()
     srand(time(NULL));
 
     Game start;
+    start.takeTurn();
 
     return 0;
 }
