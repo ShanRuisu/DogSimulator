@@ -7,6 +7,7 @@ using namespace std;
 class Player
 {
     public:
+        Player();
         
         // Mutator Functions
         void incMoney(int amt);
@@ -16,7 +17,7 @@ class Player
         int money();
     
     private:
-        int m_money = 300;
+        int m_money;
 
 };
 
@@ -43,9 +44,9 @@ class Dog
     private:
         string m_name;
         int m_age;
-        int m_health = 100;
-        bool m_hunger = false;
-        bool m_sick = false;
+        int m_health;
+        bool m_hunger;
+        bool m_sick;
 };
 
 class Game
@@ -64,14 +65,20 @@ class Game
         void endGame();
 
         // Accessor Functions
-        void printStatus(int day);
+        void printStatus();
 
     private:
         vector<Dog> m_dogs;
         Player m_player;
+        int m_day;
 };
 
 // Player Implementation
+
+Player::Player()
+{
+    m_money = 300;
+}
 
 // Increase the player's budget.
 void Player::incMoney(int amt)
@@ -107,7 +114,10 @@ int Player::money()
 Dog::Dog(string name, int age)
 {
     m_name = name;
-    m_age = age;
+    m_age = age;        
+    m_health = 100;
+    m_hunger = false;
+    m_sick = false;
 }
 
 // Increase the health of the dog
@@ -185,7 +195,9 @@ bool Dog::sick()
 // Game constructor
 Game::Game()
 {
-    cout << endl << "In this game, you will have three dogs. Try not to let them die." << endl;
+    m_day = 0;
+
+    cout << endl << "In this game, you will have three dogs. Try not to let them die." << endl << endl;
     
     // Create the dogs.
     for (int i = 0; i < 3; i++)
@@ -209,27 +221,29 @@ Game::Game()
         cout << endl;
     }
 
-    printStatus(0);
+    printStatus();
 
 }
 
 // Determines event for each dog on each turn
 void Game::takeTurn()
 {
-    int day = 1;
-
     // Keep taking turns while there are dogs are still alive
     while (m_dogs.size() > 0)
     {
         // Generate a random event for each dog
-        vector<Dog>::iterator ptr;
+        vector<Dog>::iterator dog;
 
-        for (ptr = m_dogs.begin(); ptr != m_dogs.end(); ptr++)
+        for (dog = m_dogs.begin(); dog != m_dogs.end(); dog++)
         {
-            Dog dog = *ptr;
+            // Dog dog = *ptr;
 
             int num = rand() % 8184;
 
+            millionChance();
+            endGame();
+            break;
+            /*
             // Call event depending on the number
             switch (num)
             {
@@ -247,25 +261,26 @@ void Game::takeTurn()
                     switch (num)
                     {
                         case 0:
-                            // millionChance();
+                            millionChance();
                             break;
                         default:
                             break;
                     }
             }
-
+            */
+            
             // Dog gets hungry every three days
-            if (!(day % 3))
+            if (!(m_day % 3))
             {
-                dog.getHungry();
+                dog->getHungry();
             }
 
             string choice;
 
             // Feed the dog if needed
-            if (dog.hunger())
+            if (dog->hunger())
             {
-                cout << dog.name() << " is hungry. Would you like to feed " << dog.name() << "for $25? (y/n) ";
+                cout << dog->name() << " is hungry. Would you like to feed " << dog->name() << "for $25? (y/n) ";
                 getline(cin, choice);
 
                 // Convert the string to lowercase
@@ -279,16 +294,16 @@ void Game::takeTurn()
                     // If the player cannot afford to feed the dog, decrease dog's health
                     if (!m_player.decMoney(25))
                     {
-                        dog.decHealth(25);
+                        dog->decHealth(25);
                     }
                     else
                     {
-                        dog.feed();
+                        dog->feed();
                     }
                 }
                 else if (choice.compare("n"))
                 {
-                    dog.decHealth(25);
+                    dog->decHealth(25);
                 }
                 else
                 {
@@ -297,19 +312,19 @@ void Game::takeTurn()
             }
 
             // Remove dead dogs
-            if (dog.health() == 0)
+            if (dog->health() == 0)
             {
-                m_dogs.erase(ptr);
-                ptr--;
+                m_dogs.erase(dog);
+                dog--;
             }
         }
 
         // Print the status of the remaining dogs
-        printStatus(day);
+        printStatus();
 
         cout << "Press enter to continue." << endl;
         cin.ignore(1000,'\n');
-        day++;
+        m_day++;
     }
 }
 
@@ -332,15 +347,18 @@ void Game::coyote(Dog &dog)
     }
 }
 
-// TODO: Implement currency calculator
+
+void CurrencyConverter();
+
 void Game::millionChance()
 {
-    endGame();
+    CurrencyConverter();
 }
 
 // End the game, regardless of conditions within the game
 void Game::endGame()
 {
+    // Kill all the dogs
     vector<Dog>::iterator ptr;
 
     for (ptr = m_dogs.begin(); ptr != m_dogs.end(); ptr++)
@@ -351,9 +369,9 @@ void Game::endGame()
 }
 
 // Give feedback to the player on the status of their dogs
-void Game::printStatus(int day)
+void Game::printStatus()
 {
-    cout << "It is day " << day << "." << endl;
+    cout << "It is day " << m_day << "." << endl;
     cout << endl << "Here are your dogs:" << endl << endl;
 
     // Iterate through the dog vector
@@ -369,33 +387,19 @@ void Game::printStatus(int day)
     }
 }
 
-int countrySelector(){
-    int choice;
-    cout << "Which currency would you like to convert to?" << endl;
-    cout << "(1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Franc \n" << endl;
-    cin >> choice;
-    return choice;
-}
-
-void convert(int country){
-
-    switch(country){
-        case 
-    }
-
-}
-
-void CurrencyConverter(){
-    // int choice, tocountry;
-
+// Converts your currency
+void CurrencyConverter()
+{
+    // Exchange rate matrix
+    // As of 30 August 2019
     float rate[6][6] =
     {
-        1, 0, 0, 0, 0, .5,
-        0, 1, 0, 0, 0, 0,
-        0, 0, 1, 0, 0, 0,
-        0, 0, 0, 1, 0, 0,
-        0, 0, 0, 0, 1, 0,
-        2, 0, 0, 0, 0, 1 
+        1, 0.91, 106.3, 1210.151, 20, 448,
+        1.09, 1, 117.03, 1332.83, 22.1, 493.32,
+        0.009407, 0.008544, 1, 11.39, .19, 4.20,
+        0.00082634, 0.00075028, 0.08779, 1, 0.017, 0.37,
+        0.05, 0.04524, 5.263, 58.823, 1, 22.33,
+        0.002232, 0.002027, 0.2380, 2.702, 0.0447, 1 
     };
 
     string money[6] = { "USD", "Euros", "Yen", "Won", "Pesos", "Francs" };
@@ -407,43 +411,22 @@ void CurrencyConverter(){
     float amt2;
     
     cout << "LMAO you got the one in a million chance, what a loser. You're now in a currency converter." << endl;
-    cout << "Which currency are you starting in? (1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Francs \n";
+    cout << "Which currency are you starting in? \n (1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Francs \n";
     cin >> choice1;
+    choice1--;
 
     cout << "Which currency would you like to convert to?" << endl;
-    cout << "(1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Francs \n" << endl;
+    cout << " (1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Francs \n";
     cin >> choice2;
+    choice2--;
 
     cout << "Please enter how much money you are converting: ";
     cin >> amt1;
 
     amt2 = amt1 * rate[choice1][choice2];
 
-    cout << amt1 << money[choice1] << " is " << amt2 << money[choice2] << "." << endl;
-
-
-    /*
-    switch(choice){
-            case 1:
-                tocountry=countrySelector();
-            case 2:
-                tocountry=countrySelector();
-            case 3:
-                tocountry=countrySelector();
-            case 4:
-                tocountry=countrySelector();
-            case 5:
-                tocountry=countrySelector();
-            case 6:
-                tocountry=countrySelector();
-            case 7:
-                tocountry=countrySelector();
-            default:
-                cout << "Please enter a valid option" << endl;
-    }
-    */
+    cout << amt1 << " " << money[choice1] << " is " << amt2 << " " << money[choice2] << "." << endl << endl;
 }
-
 
 int main()
 {
