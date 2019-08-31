@@ -9,14 +9,14 @@ class Player
     public:
         
         // Mutator Functions
-        void incMoney(float amt);
-        void decMoney(float amt);
+        void incMoney(int amt);
+        bool decMoney(int amt);
         
         // Accessor Functions
-        float money();
+        int money();
     
     private:
-        float m_money = 300;
+        int m_money = 300;
 
 };
 
@@ -29,6 +29,8 @@ class Dog
         // Mutator Functions
         void incHealth(int amt);
         void decHealth(int amt);
+        void feed();
+        void getHungry();
         void kill();
 
         // Accessor Functions
@@ -62,7 +64,7 @@ class Game
         void endGame();
 
         // Accessor Functions
-        void printStatus();
+        void printStatus(int day);
 
     private:
         vector<Dog> m_dogs;
@@ -72,21 +74,29 @@ class Game
 // Player Implementation
 
 // Increase the player's budget.
-void Player::incMoney(float amt)
+void Player::incMoney(int amt)
 {
     m_money += amt;
     return;
 }
 
 // Decrease the player's budget.
-void Player::decMoney(float amt)
+bool Player::decMoney(int amt)
 {
+    // Verify that player can afford to pay
+    if (m_money - amt < 0)
+    {
+        cout << "You cannot pay for this!" << endl;
+        return false;
+    }
+
     m_money -= amt;
-    return;
+
+    return true;
 }
 
 // Return the player's budget.
-float Player::money()
+int Player::money()
 {
     return m_money;
 }
@@ -104,6 +114,13 @@ Dog::Dog(string name, int age)
 void Dog::incHealth(int amt)
 {
     m_health += amt;
+
+    // The dog's health cannot exceed 100
+    if (m_health > 100)
+    {
+        m_health = 100;
+    }
+
     return;
 }
 
@@ -112,6 +129,19 @@ void Dog::decHealth(int amt)
 {
     m_health -= amt;
     return;
+}
+
+// Feed the dog
+void Dog::feed()
+{
+    incHealth(25);
+    m_hunger = false;
+}
+
+// Dog gets hungry
+void Dog::getHungry()
+{
+    m_hunger = true;
 }
 
 // Set the dog's health to 0
@@ -179,14 +209,14 @@ Game::Game()
         cout << endl;
     }
 
-    printStatus();
+    printStatus(0);
 
 }
 
 // Determines event for each dog on each turn
 void Game::takeTurn()
 {
-    int num = 0;
+    int day = 1;
 
     // Keep taking turns while there are dogs are still alive
     while (m_dogs.size() > 0)
@@ -205,7 +235,7 @@ void Game::takeTurn()
             {
                 // Coyote attack
                 case 1:
-                    coyote(dog);
+                    // coyote(dog);
                     break;
                 case 2:
                     break;
@@ -217,11 +247,53 @@ void Game::takeTurn()
                     switch (num)
                     {
                         case 0:
-                            millionChance();
+                            // millionChance();
                             break;
                         default:
                             break;
                     }
+            }
+
+            // Dog gets hungry every three days
+            if (!(day % 3))
+            {
+                dog.getHungry();
+            }
+
+            string choice;
+
+            // Feed the dog if needed
+            if (dog.hunger())
+            {
+                cout << dog.name() << " is hungry. Would you like to feed " << dog.name() << "for $25? (y/n) ";
+                getline(cin, choice);
+
+                // Convert the string to lowercase
+                for (int i = 0; i < choice.size(); i++)
+                {
+                    tolower(choice[i]);
+                }
+
+                if (choice.compare("y"))
+                {
+                    // If the player cannot afford to feed the dog, decrease dog's health
+                    if (!m_player.decMoney(25))
+                    {
+                        dog.decHealth(25);
+                    }
+                    else
+                    {
+                        dog.feed();
+                    }
+                }
+                else if (choice.compare("n"))
+                {
+                    dog.decHealth(25);
+                }
+                else
+                {
+                    cout << "Please enter either y or n." << endl;
+                }
             }
 
             // Remove dead dogs
@@ -233,10 +305,11 @@ void Game::takeTurn()
         }
 
         // Print the status of the remaining dogs
-        // printStatus();
+        printStatus(day);
 
-        cout << num << endl;
-        num++;
+        cout << "Press enter to continue." << endl;
+        cin.ignore(1000,'\n');
+        day++;
     }
 }
 
@@ -259,7 +332,7 @@ void Game::coyote(Dog &dog)
     }
 }
 
-// TODO: Implement some crazy outcome
+// TODO: Implement currency calculator
 void Game::millionChance()
 {
     endGame();
@@ -278,8 +351,9 @@ void Game::endGame()
 }
 
 // Give feedback to the player on the status of their dogs
-void Game::printStatus()
+void Game::printStatus(int day)
 {
+    cout << "It is day " << day << "." << endl;
     cout << endl << "Here are your dogs:" << endl << endl;
 
     // Iterate through the dog vector
