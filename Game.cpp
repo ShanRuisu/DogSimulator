@@ -295,6 +295,82 @@ void Game::printStatus()
     }
 }
 
+int countrySelector(){
+    int choice;
+    cout << "Which currency would you like to convert to?" << endl;
+    cout << "(1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Franc \n" << endl;
+    cin >> choice;
+    return choice;
+}
+
+void convert(int country){
+
+    switch(country){
+        case 
+    }
+
+}
+
+void CurrencyConverter(){
+    // int choice, tocountry;
+
+    float rate[6][6] =
+    {
+        1, 0, 0, 0, 0, .5,
+        0, 1, 0, 0, 0, 0,
+        0, 0, 1, 0, 0, 0,
+        0, 0, 0, 1, 0, 0,
+        0, 0, 0, 0, 1, 0,
+        2, 0, 0, 0, 0, 1 
+    };
+
+    string money[6] = { "USD", "Euros", "Yen", "Won", "Pesos", "Francs" };
+
+    int choice1;
+    int choice2;
+
+    float amt1;
+    float amt2;
+    
+    cout << "LMAO you got the one in a million chance, what a loser. You're now in a currency converter." << endl;
+    cout << "Which currency are you starting in? (1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Francs \n";
+    cin >> choice1;
+
+    cout << "Which currency would you like to convert to?" << endl;
+    cout << "(1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Francs \n" << endl;
+    cin >> choice2;
+
+    cout << "Please enter how much money you are converting: ";
+    cin >> amt1;
+
+    amt2 = amt1 * rate[choice1][choice2];
+
+    cout << amt1 << money[choice1] << " is " << amt2 << money[choice2] << "." << endl;
+
+
+    /*
+    switch(choice){
+            case 1:
+                tocountry=countrySelector();
+            case 2:
+                tocountry=countrySelector();
+            case 3:
+                tocountry=countrySelector();
+            case 4:
+                tocountry=countrySelector();
+            case 5:
+                tocountry=countrySelector();
+            case 6:
+                tocountry=countrySelector();
+            case 7:
+                tocountry=countrySelector();
+            default:
+                cout << "Please enter a valid option" << endl;
+    }
+    */
+}
+
+
 int main()
 {
     srand(time(NULL));
