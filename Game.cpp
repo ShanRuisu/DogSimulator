@@ -302,8 +302,7 @@ int main()
     Game start;
     start.takeTurn();
 
-    end:
-        cout << "Thanks for playing!" << endl;
+    cout << "Thanks for playing!" << endl;
 
     return 0;
 }
