@@ -29,8 +29,10 @@ class Dog
         // Mutator Functions
         void incHealth(int amt);
         void decHealth(int amt);
+        void getOlder();
         void feed();
         void getHungry();
+        
 
         // Accessor Functions
         string name();
@@ -155,6 +157,13 @@ void Dog::getHungry()
     return;
 }
 
+// Dog gets older
+void Dog::getOlder()
+{
+    m_age++;
+    return;
+}
+
 // Return the dog's name
 string Dog::name()
 {
@@ -192,7 +201,7 @@ Game::Game()
 {
     m_day = 0;
 
-    cout << endl << "In this game, you will have three dogs. Try not to let them die." << endl << endl;
+    cout << endl << "In this game, you will have some dogs. Try not to let them die." << endl << endl;
     
     // Create the dogs.
     for (;;)
@@ -218,16 +227,16 @@ Game::Game()
             }
         }
 
-        // Specify their age
+        // Specify your dog's age
         for(;;)
         {
             cout << "How old is your dog? ";
             cin >> newAge;
             cin.ignore(1000, '\n');
 
-            if (newAge <= 0)
+            if (newAge < 0 && newAge > 16)
             {
-                cout << "Please enter a valid age." << endl << endl;
+                cout << "Please enter a valid age between 0 and 16 (inclusive)." << endl << endl;
             }
             else
             {
@@ -262,6 +271,8 @@ void Game::gamePlay()
 
         cout << "Press enter to continue." << endl;
         cin.ignore(1000,'\n');
+
+        // Increment and the following days
         m_day++;
     }
 }
@@ -279,7 +290,7 @@ void Game::takeTurn()
         // Call event depending on the number
         switch (chance1)
         {
-            case 1:
+            case 0:
                 this->coyote(*ptr);                     // Coyote attack
                 break;
             default:
@@ -298,7 +309,7 @@ void Game::takeTurn()
         }
 
         // Dod gets hungry every three days
-        if (!(m_day % 3))
+        if (!(m_day % 3) && ptr->health() > 0 && m_day != 0)
         {
             ptr->getHungry();
         }
@@ -306,7 +317,7 @@ void Game::takeTurn()
         string choice;
 
         // Feed the dog if needed
-        if (ptr->hunger())
+        if (ptr->hunger() && ptr->health() > 0)
         {
             cout << ptr->name() << " is hungry. Would you like to feed " << ptr->name() << " for $25? (y/n) ";
             getline(cin, choice);
@@ -335,7 +346,19 @@ void Game::takeTurn()
                 cout << "Please enter either y or n." << endl << endl;
             }
         }
-        
+
+        // Dogs age every 15 days
+        if (!(m_day % 15) && ptr->health() > 0 && m_day != 0)
+        {
+            ptr->getOlder();
+        }   
+
+        // Dogs die after reaching age 17
+        if (ptr->age() >= 17 && ptr->health() > 0)
+        {
+            ptr->decHealth(100);
+        }
+
         // Remove dead dogs
         if (ptr->health() <= 0)
         {
@@ -364,7 +387,6 @@ void Game::coyote(Dog &dog)
         dog.decHealth(100);
     }
 }
-
 
 void CurrencyConverter();
 
