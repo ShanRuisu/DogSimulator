@@ -4,6 +4,7 @@
 #include <vector>
 using namespace std;
 
+// Player Class
 class Player
 {
     public:
@@ -14,13 +15,14 @@ class Player
         bool decMoney(int amt);
         
         // Accessor Functions
-        int money();
+        const int money();
     
     private:
         int m_money;
 
 };
 
+// Dog Class
 class Dog
 {
     public:
@@ -35,11 +37,11 @@ class Dog
         
 
         // Accessor Functions
-        string name();
-        int age();
-        int health();
-        bool hunger();
-        bool sick();
+        const string name();
+        const int age();
+        const int health();
+        const bool hunger();
+        const bool sick();
 
     private:
         string m_name;
@@ -49,6 +51,7 @@ class Dog
         bool m_sick;
 };
 
+// Game Class
 class Game
 {
     public:
@@ -59,13 +62,15 @@ class Game
 
         // Random Events
         void coyote(Dog &dog);
-        void millionChance();
+        void atf(Dog &dog);
+        void CurrencyConverter(const Dog dog);
 
         // Auxiliary Functions
         void endGame();
+        const void printStatus();
 
         // Accessor Functions
-        void printStatus();
+        const int day();
 
     private:
         vector<Dog> m_dogs;
@@ -73,7 +78,7 @@ class Game
         int m_day;
 };
 
-// Player Implementation
+// Player Class Implementation
 
 // Player Constructor
 Player::Player()
@@ -104,12 +109,12 @@ bool Player::decMoney(int amt)
 }
 
 // Return the player's budget
-int Player::money()
+const int Player::money()
 {
     return m_money;
 }
 
-// Dog Implementation
+// Dog Class Implementation
 
 // Dog constructor
 Dog::Dog(string name, int age)
@@ -165,36 +170,36 @@ void Dog::getOlder()
 }
 
 // Return the dog's name
-string Dog::name()
+const string Dog::name()
 {
     return m_name;
 }
 
 // Return the dog's age
-int Dog::age()
+const int Dog::age()
 {
     return m_age;
 }
 
 // Return the dog's health
-int Dog::health()
+const int Dog::health()
 {
     return m_health;
 }
 
 // Return if the dog is hungry
-bool Dog::hunger()
+const bool Dog::hunger()
 {
     return m_hunger;
 }
 
 // Return if the dog is sick
-bool Dog::sick()
+const bool Dog::sick()
 {
     return m_sick;
 }
 
-// Game Implementation
+// Game Class Implementation
 
 // Game constructor
 Game::Game()
@@ -234,9 +239,9 @@ Game::Game()
             cin >> newAge;
             cin.ignore(1000, '\n');
 
-            if (newAge < 0 && newAge > 16)
+            if (newAge < 0 || newAge > 16)
             {
-                cout << "Please enter a valid age between 0 and 16 (inclusive)." << endl << endl;
+                cout << "Please enter a valid age between 0 and 16 (inclusive)." << endl;
             }
             else
             {
@@ -262,9 +267,7 @@ void Game::gamePlay()
 
         // End the game if there are no more dogs alive
         if (m_dogs.size() == 0)
-        {
             break;
-        }
 
         // Print the status of the remaining dogs
         printStatus();
@@ -280,6 +283,8 @@ void Game::gamePlay()
 // Determines event for each dog on each turn
 void Game::takeTurn()
 {
+    cout << endl;
+
     // Keep taking turns while there are dogs are still alive
     vector<Dog>::iterator ptr;
 
@@ -293,6 +298,9 @@ void Game::takeTurn()
             case 0:
                 this->coyote(*ptr);                     // Coyote attack
                 break;
+            case 1:
+                this->atf(*ptr);                        // ATF arrives at your front door
+                break;
             default:
             {
                 int chance2 = rand() % 1000;
@@ -300,7 +308,7 @@ void Game::takeTurn()
                 switch (chance2)
                 {
                     case 1:
-                        this->millionChance();          // Currency Calculator
+                        this->CurrencyConverter(*ptr);     // Currency Calculator
                         break;
                     default:
                         cout << "Nothing happened on this day." << endl;
@@ -310,9 +318,7 @@ void Game::takeTurn()
 
         // Dod gets hungry every three days
         if (!(m_day % 3) && ptr->health() > 0 && m_day != 0)
-        {
             ptr->getHungry();
-        }
 
         string choice;
 
@@ -349,20 +355,16 @@ void Game::takeTurn()
 
         // Dogs age every 15 days
         if (!(m_day % 15) && ptr->health() > 0 && m_day != 0)
-        {
             ptr->getOlder();
-        }   
 
         // Dogs die after reaching age 17
         if (ptr->age() >= 17 && ptr->health() > 0)
-        {
             ptr->decHealth(100);
-        }
-
+        
         // Remove dead dogs
         if (ptr->health() <= 0)
         {
-            cout << ptr->name() << " has died." << endl;
+            cout << ptr->name() << " has died." << endl << endl;
             m_dogs.erase(ptr);
             ptr--;
         }
@@ -379,22 +381,77 @@ void Game::coyote(Dog &dog)
     // Determine if the dog or coyote survives the encounter  
     if (fate <= 5)
     {
-        cout << dog.name() << " ate that hoe like a Big Mac." << endl;
+        cout << dog.name() << " ate that hoe like a Big Mac." << endl << endl;
     }
     else
     {
-        cout << "The coyote ate " << dog.name() << " like a Quarter Pounder With Cheese." << endl;
+        cout << "The coyote ate " << dog.name() << " like a Quarter Pounder With Cheese." << endl << endl;
         dog.decHealth(100);
     }
+
+    return;
 }
 
-void CurrencyConverter();
-
-// Change the game into a currency converter
-void Game::millionChance()
+// ATF shoots your dog
+void Game::atf(Dog &dog)
 {
-    CurrencyConverter();
-    endGame();
+    cout << "The ATF are at your front door!" << endl;
+
+    int death = rand() % 10;
+
+    // The ATF has a high chance to kill your dog
+    if (death < 9)
+    {
+        cout << "The ATF shot your dog!" << endl << endl;
+        dog.decHealth(100);
+    }
+    else
+    {
+        cout << "The ATF didn't see your dog." << endl << endl;
+    }
+
+    return;
+}
+
+// Converts your currency
+void Game::CurrencyConverter(Dog dog)
+{
+    // Exchange rate matrix
+    // As of 30 August 2019
+    float rate[6][6] =
+    {
+        1, 0.91, 106.3, 1210.151, 20, 448,
+        1.09, 1, 117.03, 1332.83, 22.1, 493.32,
+        0.009407, 0.008544, 1, 11.39, .19, 4.20,
+        0.00082634, 0.00075028, 0.08779, 1, 0.017, 0.37,
+        0.05, 0.04524, 5.263, 58.823, 1, 22.33,
+        0.002232, 0.002027, 0.2380, 2.702, 0.0447, 1 
+    };
+
+    string money[6] = { "USD", "Euros", "Yen", "Won", "Pesos", "Francs" };
+
+    int choice1;
+    int choice2;
+
+    float amt1;
+    float amt2;
+    
+    cout << "LMAO " << dog.name() << " got the one in a million chance, what a loser. You're now in a currency converter." << endl;
+    cout << "Which currency are you starting in? \n (1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Francs \n";
+    cin >> choice1;
+    choice1--;
+
+    cout << "Which currency would you like to convert to?" << endl;
+    cout << " (1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Francs \n";
+    cin >> choice2;
+    choice2--;
+
+    cout << "Please enter how much money you are converting: ";
+    cin >> amt1;
+
+    amt2 = amt1 * rate[choice1][choice2];
+
+    cout << amt1 << " " << money[choice1] << " is " << amt2 << " " << money[choice2] << "." << endl << endl;
 }
 
 // End the game, regardless of conditions within the game
@@ -404,14 +461,11 @@ void Game::endGame()
     vector<Dog>::iterator ptr;
 
     for (ptr = m_dogs.begin(); ptr != m_dogs.end(); ptr++)
-    {
-        m_dogs.erase(ptr);
-        ptr--;
-    }
+        ptr->decHealth(100);
 }
 
 // Give feedback to the player on the status of their dogs
-void Game::printStatus()
+const void Game::printStatus()
 {
     cout << endl << "It is day " << m_day << "." << endl;
     cout << endl << "Here are your dogs:" << endl << endl;
@@ -453,45 +507,9 @@ void Game::printStatus()
     cout << "You have $" << m_player.money() << "." << endl << endl; 
 }
 
-// Converts your currency
-void CurrencyConverter()
+const int Game::day()
 {
-    // Exchange rate matrix
-    // As of 30 August 2019
-    float rate[6][6] =
-    {
-        1, 0.91, 106.3, 1210.151, 20, 448,
-        1.09, 1, 117.03, 1332.83, 22.1, 493.32,
-        0.009407, 0.008544, 1, 11.39, .19, 4.20,
-        0.00082634, 0.00075028, 0.08779, 1, 0.017, 0.37,
-        0.05, 0.04524, 5.263, 58.823, 1, 22.33,
-        0.002232, 0.002027, 0.2380, 2.702, 0.0447, 1 
-    };
-
-    string money[6] = { "USD", "Euros", "Yen", "Won", "Pesos", "Francs" };
-
-    int choice1;
-    int choice2;
-
-    float amt1;
-    float amt2;
-    
-    cout << "LMAO you got the one in a million chance, what a loser. You're now in a currency converter." << endl;
-    cout << "Which currency are you starting in? \n (1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Francs \n";
-    cin >> choice1;
-    choice1--;
-
-    cout << "Which currency would you like to convert to?" << endl;
-    cout << " (1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Francs \n";
-    cin >> choice2;
-    choice2--;
-
-    cout << "Please enter how much money you are converting: ";
-    cin >> amt1;
-
-    amt2 = amt1 * rate[choice1][choice2];
-
-    cout << amt1 << " " << money[choice1] << " is " << amt2 << " " << money[choice2] << "." << endl << endl;
+    return m_day;
 }
 
 int main()
