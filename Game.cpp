@@ -290,7 +290,7 @@ void Game::takeTurn()
 
     for (ptr = m_dogs.begin(); ptr != m_dogs.end(); ptr++)
     {
-        int chance1 = rand() % 3;
+        int chance1 = rand() % 10;
     
         // Call event depending on the number
         switch (chance1)
@@ -438,16 +438,61 @@ void Game::CurrencyConverter(Dog dog)
     
     cout << "LMAO " << dog.name() << " got the one in a million chance, what a loser. You're now in a currency converter." << endl;
     cout << "Which currency are you starting in? \n (1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Francs \n";
-    cin >> choice1;
-    choice1--;
+    
+    for(;;)
+    {
+        cin >> choice1;
+
+        // Verify that the choice entered is valid
+        if (choice1 < 1 || choice1 > 6)
+        {
+            cout << "Please enter a valid number. ";
+            continue;
+        }
+        else
+        {
+            choice1--;
+            break;
+        }
+    }
 
     cout << "Which currency would you like to convert to?" << endl;
     cout << " (1) US Dollars \n (2) Euros \n (3) Yen \n (4) Won \n (5) Pesos \n (6) Francs \n";
-    cin >> choice2;
-    choice2--;
+
+    for(;;)
+    {
+        cin >> choice2;
+
+        // Verify that the choice entered is valid
+        if (choice2 < 1 || choice2 > 6)
+        {
+            cout << "Please enter a valid number. ";
+            continue;
+        }
+        else
+        {
+            choice2--;
+            break;
+        }
+    }
 
     cout << "Please enter how much money you are converting: ";
-    cin >> amt1;
+
+    for (;;)
+    {
+        cin >> amt1;
+
+        // Verify a positive amount is inputted
+        if (amt1 <= 0)
+        {
+            cout << "Please enter a positive amount of money. ";
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
 
     amt2 = amt1 * rate[choice1][choice2];
 
