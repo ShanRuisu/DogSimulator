@@ -296,10 +296,10 @@ void Game::takeTurn()
         switch (chance1)
         {
             case 0:
-                this->coyote(*ptr);                     // Coyote attack
+                coyote(*ptr);                     // Coyote attack
                 break;
             case 1:
-                this->atf(*ptr);                        // ATF arrives at your front door
+                atf(*ptr);                        // ATF arrives at your front door
                 break;
             default:
             {
@@ -308,7 +308,7 @@ void Game::takeTurn()
                 switch (chance2)
                 {
                     case 1:
-                        this->CurrencyConverter(*ptr);     // Currency Calculator
+                        CurrencyConverter(*ptr);     // Currency Calculator
                         break;
                     default:
                         cout << "Nothing happened on this day." << endl;
