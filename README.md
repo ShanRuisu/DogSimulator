@@ -2,7 +2,7 @@
 
 **Created by:**</br>
 *Shawn Lewis (shawnmaslewis@gmail.com)*</br>
-*Nicholas Yamamoto*</br>
+*Nicholas Yamamoto (nicholas.yamamoto@gmail.com)*</br>
 *Thomas Kaneshige (tykaneshige.work@gmail.com)*</br>
 
 Created in August 2019
@@ -25,6 +25,13 @@ Created in August 2019
 * Player Class
   * Properties
     * Money: This is the player's budget for the game. The player will start with $300.
+    * Job: This determines the player's income in the game. This will be represented by a char. 
+    Here is the listings for the possible jobs:
+      * 5%: "Bottlecap Salesman" - $10.
+      * 10%: "Bus Driver" - $50.
+      * 70%: "McDonald's Worker" - $120.
+      * 10%: "George W. Bush's Toilet Seat Warmer" - $500.
+      * 5%: "High Quality Twitch Streamer" - $800.
 
 * Dog Class
   * Properties
@@ -38,5 +45,8 @@ Created in August 2019
 
 * Game Class
   * Properties
+    * Dog List: This linked list holds all dogs currently alive within the game. A linked list was
+    used because there will deletions happening at random points in the list. Random access does
+    not take place in the game, so the need for a vector is elimnated.
+
     * Day: This variable tracks the number of days the player has had at least one dog alive.
-    * Dog List: This linked list holds all dogs currently alive within the game.

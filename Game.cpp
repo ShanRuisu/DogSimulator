@@ -16,6 +16,7 @@ class Player
         
         // Accessor Functions
         const int money();
+        const char job();
     
     private:
         int m_money;
@@ -85,26 +86,29 @@ class Game
 Player::Player()
 {
     m_money = 300;
+
+    // Randomly determine the player's income
     int salary = rand() % 100;
-    if (salary <= 4);
+
+    if (salary <= 4)
     {
-        m_job = 'B';
+        m_job = 'B';                // Bottlecap Salesman job
     }
-    else if (salary <= 14);
+    else if (salary <= 14)
     {
-        m_job = 'D';
+        m_job = 'D';                // Bus Driver job
     }
-    else if (salary <= 84);
+    else if (salary <= 84)
     {
-        m_job = 'M';
+        m_job = 'M';                // McDonald's Worker job
     }
-    else if (salary <= 94);
+    else if (salary <= 94)
     {
-        m_job = 'G';
+        m_job = 'G';                // George Bush's Toilet Seat Warmer job
     }
-    else;
+    else
     {
-        m_job = 'T';
+        m_job = 'T';                // High Quality Twitch Streamer job
     }
 }
 
@@ -134,6 +138,12 @@ bool Player::decMoney(int amt)
 const int Player::money()
 {
     return m_money;
+}
+
+// Return the player's job
+const char Player::job()
+{
+    return m_job;
 }
 
 // Dog Class Implementation
@@ -279,6 +289,29 @@ Game::Game()
     // Print the starting status of each dog.
     printStatus();
 
+    // Print the player's job.
+    switch(m_player.job())
+    {
+        case 'B':
+            cout << "You are a Bottlecap Salesman.\n";
+            break;
+        case 'D':
+            cout << "You are a Bus Driver. Thank you.\n";
+            break;
+        case 'M':
+            cout << "You are a McDonald's Worker. I would like a Happy Meal please.\n";
+            break;
+        case 'G':
+            cout << "You are George Bush's Toiler Seat Warmer. I'm sorry.\n";
+            break;
+        case 'T':
+            cout << "You are High Quality Twitch Streamer. Support me on Patreon.\n";
+            break;
+        default:
+            cout << "This isn't a valid job.\n";                                                // Catching any unexpected values
+            break;
+    }
+
     cout << "Press enter to continue." << endl;
     cin.ignore(1000,'\n');
 
@@ -340,6 +373,7 @@ void Game::takeTurn()
                         break;
                     default:
                         cout << "Nothing happened on this day." << endl;
+                        break;
                 }
             }
         }
