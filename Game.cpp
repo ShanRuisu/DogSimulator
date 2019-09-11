@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <ctime>
-#include <vector>
+#include <list>
 using namespace std;
 
 // Player Class
@@ -73,7 +73,7 @@ class Game
         const int day();
 
     private:
-        vector<Dog> m_dogs;
+        list<Dog> m_dogs;
         Player m_player;
         int m_day;
 };
@@ -257,6 +257,12 @@ Game::Game()
     // Print the starting status of each dog.
     printStatus();
 
+    cout << "Press enter to continue." << endl;
+    cin.ignore(1000,'\n');
+
+    // Start on day 1.
+    m_day++;
+
 }
 
 void Game::gamePlay()
@@ -286,7 +292,7 @@ void Game::takeTurn()
     cout << endl;
 
     // Keep taking turns while there are dogs are still alive
-    vector<Dog>::iterator ptr;
+    list<Dog>::iterator ptr;
 
     for (ptr = m_dogs.begin(); ptr != m_dogs.end(); ptr++)
     {
@@ -503,7 +509,7 @@ void Game::CurrencyConverter(Dog dog)
 void Game::endGame()
 {
     // Kill all the dogs
-    vector<Dog>::iterator ptr;
+    list<Dog>::iterator ptr;
 
     for (ptr = m_dogs.begin(); ptr != m_dogs.end(); ptr++)
         ptr->decHealth(100);
@@ -516,7 +522,7 @@ const void Game::printStatus()
     cout << endl << "Here are your dogs:" << endl << endl;
 
     // Iterate through the dog vector
-    vector<Dog>::iterator ptr;
+    list<Dog>::iterator ptr;
     for (ptr = m_dogs.begin(); ptr != m_dogs.end(); ptr++)
     {
         // Create dog object
