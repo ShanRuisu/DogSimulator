@@ -19,6 +19,7 @@ class Player
     
     private:
         int m_money;
+        char m_job;
 
 };
 
@@ -84,6 +85,27 @@ class Game
 Player::Player()
 {
     m_money = 300;
+    int salary = rand() % 100;
+    if (salary <= 4);
+    {
+        m_job = 'B';
+    }
+    else if (salary <= 14);
+    {
+        m_job = 'D';
+    }
+    else if (salary <= 84);
+    {
+        m_job = 'M';
+    }
+    else if (salary <= 94);
+    {
+        m_job = 'G';
+    }
+    else;
+    {
+        m_job = 'T';
+    }
 }
 
 // Increase the player's budget.
