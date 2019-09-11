@@ -315,7 +315,7 @@ Game::Game()
     cout << "Press enter to continue." << endl;
     cin.ignore(1000,'\n');
 
-    // Start on day 1.
+    // Start the game on day 1.
     m_day++;
 
 }

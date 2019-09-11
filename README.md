@@ -7,6 +7,9 @@
 
 Created in August 2019
 
+**This was primairily created to review and to teach basic concepts of C++, such as variables,**
+**arrays, if-else statements, functions, and classes (Everything except pointers).**
+
 ---
 
 ## Overview
@@ -17,6 +20,31 @@ Created in August 2019
 
 ## Game Events
 
+### Normal Events
+1. Coyote Attack
+    * On any given day, one of your dogs may be attacked by a coyote. However, your dog might be able to 
+    overcome the coyote. There is a 60% chance for your dog to kill the coyote, and a 40% chance for your
+    dog to be eaten by the coyote.
+2. ATF
+    * If you're unlucky, the ATF will show up at your front door. And much to your despair, the ATF showing
+    up at your front door will almost always (90%) result in the death of one of your dogs. However, rest 
+    assured, your dog will have a 10% chance to not be seen by the ATF when they appear.
+1. Nothing Happens
+    * There is a chance for simply nothing to happen to your dog. 
+
+
+### Recurring Events
+1. Hunger
+    * Every 3 days, your dog will get hungry. Dog food is somewhat expensive, so it will cost you $25
+    to feed just one dog. For every day that your dog is left unfed, it will lose 25 health. Upon feeding
+    a hungry dog, it will gain 10 health back.
+
+
+### Rare Events
+1. Currency Converter
+    * There is a very small chance (Approximately .1% chance) that your game session might execute
+    its Currency Converter functionality. Feel free to convert currency between dollars, euros, yen
+    won, pesos, and francs to your leisure.
 
 ---
 
@@ -47,6 +75,6 @@ Created in August 2019
   * Properties
     * Dog List: This linked list holds all dogs currently alive within the game. A linked list was
     used because there will deletions happening at random points in the list. Random access does
-    not take place in the game, so the need for a vector is elimnated.
-
+    not take place in the game, so the need for a vector is eliminated.
+    * Player: This holds the player's stats for the game.
     * Day: This variable tracks the number of days the player has had at least one dog alive.
