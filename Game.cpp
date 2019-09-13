@@ -108,18 +108,18 @@ Player::Player()
     }
     else
     {
-        m_job = 'T';                // High Quality Twitch Streamer job
+        m_job = 'T';                // High Quality Twitch Streamer but not as good as Aespirin job
     }
 }
 
-// Increase the player's budget.
+// Increase the player's budget by amt
 void Player::incMoney(int amt)
 {
     m_money += amt;
     return;
 }
 
-// Decrease the player's budget
+// Decrease the player's budget by amt
 bool Player::decMoney(int amt)
 {
     // Verify that player can afford to pay
@@ -158,7 +158,7 @@ Dog::Dog(string name, int age)
     m_sick = false;
 }
 
-// Increase the health of the dog
+// Increase the health of the dog by amt
 void Dog::incHealth(int amt)
 {
     m_health += amt;
@@ -172,7 +172,7 @@ void Dog::incHealth(int amt)
     return;
 }
 
-// Decrease the health of the dog
+// Decrease the health of the dog by amt
 void Dog::decHealth(int amt)
 {
     m_health -= amt;
@@ -378,7 +378,7 @@ void Game::takeTurn()
             }
         }
 
-        // Dod gets hungry every three days
+        // Dog gets hungry every three days
         if (!(m_day % 3) && ptr->health() > 0 && m_day != 0)
             ptr->getHungry();
 
@@ -412,6 +412,35 @@ void Game::takeTurn()
             else
             {
                 cout << "Please enter either y or n." << endl << endl;
+            }
+        }
+
+        // Player gets paid every 7 days
+        if (!(m_day % 7))
+        {
+            char job = m_player.job();
+
+            // Player is paid by what job he/she has.
+            switch(job)
+            {
+                case 'B':
+                    m_player.incMoney(10);
+                    break;
+                case 'D':
+                    m_player.incMoney(50);
+                    break;
+                case 'M':
+                    m_player.incMoney(120);
+                    break;
+                case 'G':
+                    m_player.incMoney(500);
+                    break;
+                case 'T':
+                    m_player.incMoney(800);
+                    break;
+                default:
+                    cout << "Bye.\n";
+                    break;
             }
         }
 
