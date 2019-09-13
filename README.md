@@ -29,6 +29,10 @@ Created in August 2019
     * If you're unlucky, the ATF will show up at your front door. And much to your despair, the ATF showing
     up at your front door will almost always (90%) result in the death of one of your dogs. However, rest 
     assured, your dog will have a 10% chance to not be seen by the ATF when they appear.
+3. Sickness
+    * Your dog on any given day has a random chance to get sick. And since you live in the United States, 
+    it costs $30 to procure the medicine your dog needs to get well again. But if you cannot afford (or are
+    not willing to pay) for the medicine, your dog will lose 35 health it is left untreated.
 1. Nothing Happens
     * There is a chance for simply nothing to happen to your dog. 
 

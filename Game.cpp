@@ -366,7 +366,7 @@ void Game::takeTurn()
 
     for (ptr = m_dogs.begin(); ptr != m_dogs.end(); ptr++)
     {
-        int chance1 = rand() % 3;
+        int chance1 = rand() % 5;
     
         // Call event depending on the number
         switch (chance1)
@@ -425,7 +425,7 @@ void Game::takeTurn()
                 }
                 else if (input[0] == 'n')
                 {
-                    ptr->heal();
+                    ptr->decHealth(35);
                     break;
                 }
                 else
