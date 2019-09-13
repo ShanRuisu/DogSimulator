@@ -36,7 +36,8 @@ class Dog
         void getOlder();
         void feed();
         void getHungry();
-        
+        void heal();
+        void getSick();
 
         // Accessor Functions
         const string name();
@@ -179,6 +180,13 @@ void Dog::decHealth(int amt)
     return;
 }
 
+// Dog ages one year
+void Dog::getOlder()
+{
+    m_age++;
+    return;
+}
+
 // Feed the dog
 void Dog::feed()
 {
@@ -187,17 +195,24 @@ void Dog::feed()
     return;
 }
 
-// Dog gets hungry
+// Set m_hunger to true
 void Dog::getHungry()
 {
     m_hunger = true;
     return;
 }
 
-// Dog gets older
-void Dog::getOlder()
+// Set m_sick to false
+void Dog::heal()
 {
-    m_age++;
+    m_sick = false;
+    return;
+}
+
+// Set m_sick to true
+void Dog::getSick()
+{
+    m_sick = true;
     return;
 }
 
