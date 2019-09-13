@@ -366,7 +366,7 @@ void Game::takeTurn()
 
     for (ptr = m_dogs.begin(); ptr != m_dogs.end(); ptr++)
     {
-        int chance1 = rand() % 10;
+        int chance1 = rand() % 3;
     
         // Call event depending on the number
         switch (chance1)
@@ -376,6 +376,9 @@ void Game::takeTurn()
                 break;
             case 1:
                 atf(*ptr);                        // ATF arrives at your front door
+                break;
+            case 2:
+                ptr->getSick();                   // Dog gets sick
                 break;
             default:
             {
@@ -393,41 +396,86 @@ void Game::takeTurn()
             }
         }
 
+        // Decrease dog's health for every day it is sick
+        if (ptr->sick())
+        {
+            // Keeping prompting for input until a valid response is given
+            do
+            {
+                string input;
+                cout << ptr->name() << " is sick. Would you like to heal " << ptr->name() << " for $30 (y/n)? ";
+                getline(cin, input);
+
+                // Convert input to lowercase
+                tolower(input[0]);
+
+                if (input[0] == 'y')
+                {
+                    // If player cannot afford to treat the dog, decrease the dog's health
+                    if (m_player.decMoney(30))
+                    {
+                        ptr->decHealth(35);
+                        break;
+                    }
+                    else
+                    {
+                        ptr->heal();
+                        break;
+                    }
+                }
+                else if (input[0] == 'n')
+                {
+                    ptr->heal();
+                    break;
+                }
+                else
+                {
+                    cout << "Please enter either 'y' or 'n'." << endl << endl;
+                }
+            } while (0 == 0);
+        }
+
         // Dog gets hungry every three days
         if (!(m_day % 3) && ptr->health() > 0 && m_day != 0)
             ptr->getHungry();
 
-        string choice;
-
         // Feed the dog if needed
         if (ptr->hunger() && ptr->health() > 0)
         {
-            cout << ptr->name() << " is hungry. Would you like to feed " << ptr->name() << " for $25? (y/n) ";
-            getline(cin, choice);
+            // Keeping prompting for input until a valid response is given
+            do
+            {   
+                string choice;        
+                cout << ptr->name() << " is hungry. Would you like to feed " << ptr->name() << " for $25? (y/n) ";
+                getline(cin, choice);
 
-            // Convert choice to lowercase
-            tolower(choice[0]);
+                // Convert choice to lowercase
+                tolower(choice[0]);
         
-            if (choice[0] == 'y')
-            {
-                // If the player cannot afford to feed the dog, decrease dog's health
-                if (!m_player.decMoney(25))
+                if (choice[0] == 'y')
+                {
+                    // If the player cannot afford to feed the dog, decrease dog's health
+                    if (!m_player.decMoney(25))
+                    {
+                        ptr->decHealth(25);
+                        break;
+                    }
+                    else
+                    {
+                        ptr->feed();
+                        break;
+                    }
+                }
+                else if (choice[0] == 'n')
                 {
                     ptr->decHealth(25);
+                    break;
                 }
                 else
                 {
-                    ptr->feed();
+                    cout << "Please enter either y or n." << endl << endl;
                 }
-            }
-            else if (choice[0] == 'n')
-            {
-                ptr->decHealth(25);
-            }
-            else
-            {
-                cout << "Please enter either y or n." << endl << endl;
-            }
+            } while (0 == 0);
         }
 
         // Player gets paid every 7 days
